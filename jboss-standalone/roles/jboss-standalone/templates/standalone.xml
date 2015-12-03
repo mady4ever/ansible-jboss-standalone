@@ -102,27 +102,27 @@
                     </security>
                 </datasource>
                 <datasource jta="false" jndi-name="java:jboss/datasources/jbpmDS" pool-name="H2DS" enabled="true" use-java-context="true" use-ccm="true">
-                    <connection-url>jdbc:mysql://db:3306/jbpm5</connection-url>
-                    <driver>mysqlDriver</driver>
+                    <connection-url>jdbc:mysql://{{private_link_jboss_mysql_server_ip}}:{{private_link_jboss_mysql_server_port}}/{{private_link_jboss_mysql_server_jbpm_database_name}}</connection-url>
+                    <driver>{{private_link_jboss_mysql_server_jbpm_database_driver_name}}</driver>
                     <security>
-                        <user-name>root</user-name>
+                        <user-name>{{private_link_jboss_mysql_server_jbpm_database_user_name}}</user-name>
                     </security>
                 </datasource>
                 <datasource jta="false" jndi-name="java:jboss/datasources/MySqlDS" pool-name="MySqlDS_Pool" enabled="true" use-java-context="true" use-ccm="false">
-                    <connection-url>jdbc:mysql://db:3306/centro</connection-url>
-                    <driver-class>com.mysql.jdbc.Driver</driver-class>
-                    <driver>mysqlDriver</driver>
+                    <connection-url>jdbc:mysql://{{private_link_jboss_mysql_server_ip}}:{{private_link_jboss_mysql_server_port}}/{{private_link_jboss_mysql_server_centro_database_name}}</connection-url>
+                    <driver-class>{{private_link_jboss_mysql_server_centro_database_driver_class_name}}</driver-class>
+                    <driver>{{private_link_jboss_mysql_server_centro_database_driver_name}}</driver>
                     <pool>
-                        <min-pool-size>1</min-pool-size>
-                        <max-pool-size>30</max-pool-size>
+                        <min-pool-size>{{private_link_jboss_mysql_server_centro_database_min_pool_size}}</min-pool-size>
+                        <max-pool-size>{{private_link_jboss_mysql_server_centro_database_max_pool_size}}</max-pool-size>
                         <prefill>true</prefill>
                         <use-strict-min>true</use-strict-min>
                     </pool>
                     <security>
-                        <user-name>root</user-name>
+                        <user-name>{{private_link_jboss_mysql_server_centro_database_user_name}}</user-name>
                     </security>
                     <validation>
-    			<check-valid-connection-sql>select 1</check-valid-connection-sql>
+    			<check-valid-connection-sql>{{private_link_jboss_mysql_server_centro_database_validation_sql_query}}</check-valid-connection-sql>
     			<background-validation>true</background-validation>
     			<background-validation-millis>15000</background-validation-millis>
 		    </validation>
@@ -330,13 +330,13 @@
         <socket-binding name="management-native" interface="management" port="${jboss.management.native.port:9999}"/>
         <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
         <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9443}"/>
-        <socket-binding name="ajp" port="8009"/>
-        <socket-binding name="http" port="8080"/>
-        <socket-binding name="https" port="8443"/>
-        <socket-binding name="osgi-http" interface="management" port="8090"/>
-        <socket-binding name="remoting" port="4447"/>
-        <socket-binding name="txn-recovery-environment" port="4712"/>
-        <socket-binding name="txn-status-manager" port="4713"/>
+        <socket-binding name="ajp" port= {{private_link_jboss_ajp}} />
+        <socket-binding name="http" port= {{private_link_jboss_http_port}} />
+        <socket-binding name="https" port= {{private_link_jboss_https_port}} />
+        <socket-binding name="osgi-http" interface="management" port= {{private_link_jboss_osgi_mgmt_http_port}} />
+        <socket-binding name="remoting" port= {{private_link_jboss_remoting_port}} />
+        <socket-binding name="txn-recovery-environment" port= {{private_link_jboss_txn_recovery_environment_port}} />
+        <socket-binding name="txn-status-manager" port= {{private_link_jboss_txn_status_manager_port}}/>
         <outbound-socket-binding name="mail-smtp">
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
