@@ -1,11 +1,11 @@
 # Here are variables related to the standalone JBoss installation
-private_link_jboss_ajp: 8009
-private_link_jboss_http_port: 8080
-private_link_jboss_https_port: 8443
-private_link_jboss_osgi_mgmt_http_port: 8090
-private_link_jboss_remoting_port: 4447
-private_link_jboss_txn_recovery_environment_port: 4712
-private_link_jboss_txn_status_manager_port: 4713
+private_link_jboss_ajp: "8009"
+private_link_jboss_http_port: "8080"
+private_link_jboss_https_port: "8443"
+private_link_jboss_osgi_mgmt_http_port: "8090"
+private_link_jboss_remoting_port: "4447"
+private_link_jboss_txn_recovery_environment_port: "4712"
+private_link_jboss_txn_status_manager_port: "4713"
 private_link_jboss_mysql_server_ip: db
 private_link_jboss_mysql_server_port: 3306
 private_link_jboss_mysql_server_jbpm_database_name: jbpm5

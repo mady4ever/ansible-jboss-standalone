@@ -330,13 +330,13 @@
         <socket-binding name="management-native" interface="management" port="${jboss.management.native.port:9999}"/>
         <socket-binding name="management-http" interface="management" port="${jboss.management.http.port:9990}"/>
         <socket-binding name="management-https" interface="management" port="${jboss.management.https.port:9443}"/>
-        <socket-binding name="ajp" port= {{private_link_jboss_ajp}} />
-        <socket-binding name="http" port= {{private_link_jboss_http_port}} />
-        <socket-binding name="https" port= {{private_link_jboss_https_port}} />
-        <socket-binding name="osgi-http" interface="management" port= {{private_link_jboss_osgi_mgmt_http_port}} />
-        <socket-binding name="remoting" port= {{private_link_jboss_remoting_port}} />
-        <socket-binding name="txn-recovery-environment" port= {{private_link_jboss_txn_recovery_environment_port}} />
-        <socket-binding name="txn-status-manager" port= {{private_link_jboss_txn_status_manager_port}}/>
+        <socket-binding name="ajp" port= "{{private_link_jboss_ajp}}" />
+        <socket-binding name="http" port= "{{private_link_jboss_http_port}}" />
+        <socket-binding name="https" port= "{{private_link_jboss_https_port}}" />
+        <socket-binding name="osgi-http" interface="management" port= "{{private_link_jboss_osgi_mgmt_http_port}}" />
+        <socket-binding name="remoting" port= "{{private_link_jboss_remoting_port}}" />
+        <socket-binding name="txn-recovery-environment" port= "{{private_link_jboss_txn_recovery_environment_port}}" />
+        <socket-binding name="txn-status-manager" port= "{{private_link_jboss_txn_status_manager_port}}"/>
         <outbound-socket-binding name="mail-smtp">
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
