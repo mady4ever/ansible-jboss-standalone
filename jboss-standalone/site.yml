@@ -1,0 +1,7 @@
+---
+
+- hosts: jboss-servers 
+  remote_user: root
+
+  roles:
+    - jboss-standalone

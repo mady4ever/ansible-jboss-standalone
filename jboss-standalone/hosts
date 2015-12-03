@@ -1,0 +1,4 @@
+[jboss-servers]
+#192.168.10.12 ansible_user=root ansible_ssh_pass=Nbv12345
+#192.168.10.13 ansible_user=root ansible_ssh_pass=Nbv12345
+192.168.10.14 ansible_user=root ansible_ssh_pass=Nbv12345

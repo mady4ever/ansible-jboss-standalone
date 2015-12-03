@@ -1,0 +1,229 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema centro
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `centro` ;
+
+-- -----------------------------------------------------
+-- Schema centro
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `centro` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ;
+ 
+
+USE `centro` ;
+
+-- -----------------------------------------------------
+-- Table `centro`.`provider`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `centro`.`provider` ;
+
+CREATE TABLE IF NOT EXISTS `centro`.`provider` (
+  `id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `provider_asr_gw1_name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_asr_gw1_interface` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_asr_gw2_name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_asr_gw2_interface` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_local_bgp_asn` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_openstack_controller` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_asr_gw1_qinqinterface` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_asr_gw2_qinqinterface` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_site_name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_site_full_mesh` BIT(1) NOT NULL DEFAULT b'0' COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '')
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `centro`.`pl_connection`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `centro`.`pl_connection` ;
+
+CREATE TABLE IF NOT EXISTS `centro`.`pl_connection` (
+  `id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `pl_tenant_uuid` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `provider_id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `pl_vrf_name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `pl_interconnect_vlan` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `pl_status` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `decomissioned` BIT(1) NOT NULL DEFAULT b'0' COMMENT '',
+  `pl_project_uuid` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `connection_type` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `vms_bgp_asn` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `transition_network_id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+   `jbpm_sessionId` VARCHAR(45)CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `fk_pl_connection_Provider1_idx` (`provider_id` ASC)  COMMENT '',
+  CONSTRAINT `fk_pl_connection_Provider1`
+    FOREIGN KEY (`provider_id`)
+    REFERENCES `centro`.`provider` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `centro`.`MPLS_Routes`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `centro`.`MPLS_Routes` ;
+
+CREATE TABLE IF NOT EXISTS `centro`.`MPLS_Routes` (
+  `id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `route_dest_prefix` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `decomissioned` BIT(1) NOT NULL DEFAULT b'0' COMMENT '',
+  `pl_connection_id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `fk_MPLS_Routes_pl_connection1_idx` (`pl_connection_id` ASC)  COMMENT '',
+  CONSTRAINT `fk_MPLS_Routes_pl_connection1`
+    FOREIGN KEY (`pl_connection_id`)
+    REFERENCES `centro`.`pl_connection` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `centro`.`bgp_peering`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `centro`.`bgp_peering` ;
+
+CREATE TABLE IF NOT EXISTS `centro`.`bgp_peering` (
+  `id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `remote_bgp_asn` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `encrypt_type` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `bgp_password` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `ttl_security` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `bgp_remote_pe_ip_gw1` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `bgp_remote_pe_mask` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `bgp_remote_pe_ip_gw2` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `bgp_ip_addr_gw1` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `bgp_neigh_desc_gw1` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `bgp_ip_addr_gw2` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `bgp_neigh_desc_gw2` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `bgp_asn_number` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `decomissioned` BIT(1) NOT NULL DEFAULT b'0' COMMENT '',
+  `pl_connection_id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `fk_bgp_peering_pl_connection1_idx` (`pl_connection_id` ASC)  COMMENT '',
+  CONSTRAINT `fk_bgp_peering_pl_connection1`
+    FOREIGN KEY (`pl_connection_id`)
+    REFERENCES `centro`.`pl_connection` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `centro`.`global_config`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `centro`.`global_config` ;
+
+CREATE TABLE IF NOT EXISTS `centro`.`global_config` (
+  `id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `provider_id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `value` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `environment` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `fk_global_config_Provider1_idx` (`provider_id` ASC)  COMMENT '',
+  CONSTRAINT `fk_global_config_Provider1`
+    FOREIGN KEY (`provider_id`)
+    REFERENCES `centro`.`provider` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `centro`.`pl_project`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `centro`.`pl_project` ;
+
+CREATE TABLE IF NOT EXISTS `centro`.`pl_project` (
+  `id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `pl_project_uuid` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `decomissioned` BIT(1) NOT NULL DEFAULT b'0' COMMENT '',
+  `pl_connection_id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `fk_pl_project_pl_connection1_idx` (`pl_connection_id` ASC)  COMMENT '',
+  CONSTRAINT `fk_pl_project_pl_connection1`
+    FOREIGN KEY (`pl_connection_id`)
+    REFERENCES `centro`.`pl_connection` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `centro`.`subnet_routes`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `centro`.`subnet_routes` ;
+
+CREATE TABLE IF NOT EXISTS `centro`.`subnet_routes` (
+  `id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `subnet_cidr` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `subnet_fwd_router_ip` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `decomissioned` BIT(1) NOT NULL DEFAULT b'0' COMMENT '',
+  `pl_project_id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `fk_subnet_routes_pl_project1_idx` (`pl_project_id` ASC)  COMMENT '',
+  CONSTRAINT `fk_subnet_routes_pl_project1`
+    FOREIGN KEY (`pl_project_id`)
+    REFERENCES `centro`.`pl_project` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+-- -----------------------------------------------------
+-- Table `centro`.`transitional_vlan`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `centro`.`transitional_vlan` ;
+
+CREATE TABLE IF NOT EXISTS `centro`.`transitional_vlan` (
+  `id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  `openstack_router_uuid` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `openstack_router_name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `openstack_project_name` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `transitional_vlan` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `transitional_hsrp_ip` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `transitional_bvi_ip_gw1` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `transitional_bvi_ip_gw2` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `transitional_neutron_router_ip` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `transitional_mask` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL COMMENT '',
+  `decomissioned` BIT(1) NOT NULL DEFAULT b'0' COMMENT '',
+  `pl_project_id` VARCHAR(45) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL COMMENT '',
+  PRIMARY KEY (`id`)  COMMENT '',
+  INDEX `fk_transitional_vlan_pl_project1_idx` (`pl_project_id` ASC)  COMMENT '',
+  CONSTRAINT `fk_transitional_vlan_pl_project1`
+    FOREIGN KEY (`pl_project_id`)
+    REFERENCES `centro`.`pl_project` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8
+COLLATE = utf8_unicode_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
